@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-
-import LoginModal from '../../components/login-modal';
+import React from 'react';
+import LoginScreen from '../../components/LoginScreen';
 
 export default function App() {
   return (
-    <LoginModal />
+    <LoginScreen onLogin={(userType) => console.log(userType)} />
   );
-  }; 
+}
