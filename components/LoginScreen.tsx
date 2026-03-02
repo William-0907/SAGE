@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import {
   View,
   Text,
@@ -11,22 +12,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
-interface LoginScreenProps {
-  onLogin: (userType: 'student' | 'educator' | 'admin') => void;
-}
-
-export default function LoginScreen({ onLogin }: LoginScreenProps) {
+export default function LoginScreen() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showAITip, setShowAITip] = useState(true);
-
-  // Hardcode the user type for now
-  const userType: 'student' | 'educator' | 'admin' = 'student';
-
-  const aiTips = {
-    student: "Welcome! I'll help you create personalized study paths and track your progress.",
-    educator: "Hello! I'll assist you in creating engaging lessons and tracking student performance.",
-    admin: "Welcome Admin! I'll help you manage the platform and generate insights.",
-  };
+  const router = useRouter();
 
   return (
     <LinearGradient
@@ -54,7 +43,9 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                 <View style={styles.aiIcon}>
                   <Ionicons name="sparkles-outline" size={16} color="#3B0764" />
                 </View>
-                <Text style={styles.aiText}>{aiTips[userType]}</Text>
+                <Text style={styles.aiText}>
+                  Welcome! Sign in to continue.
+                </Text>
                 <TouchableOpacity onPress={() => setShowAITip(false)}>
                   <Text style={styles.closeText}>×</Text>
                 </TouchableOpacity>
@@ -68,14 +59,10 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               {isSignUp ? 'Create Account' : 'Welcome Back'}
             </Text>
 
-            {/* Inputs */}
             {isSignUp && (
               <View style={styles.inputContainer}>
                 <Ionicons name="person-outline" size={18} color="#9CA3AF" />
-                <TextInput
-                  placeholder="Full Name"
-                  style={styles.input}
-                />
+                <TextInput placeholder="Full Name" style={styles.input} />
               </View>
             )}
 
@@ -97,17 +84,18 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               />
             </View>
 
-            {/* Button */}
             <TouchableOpacity
               style={styles.loginButton}
-              onPress={() => onLogin(userType)}
+              onPress={() => {
+                // After successful authentication
+                router.replace('/dashboard');
+              }}
             >
               <Text style={styles.loginButtonText}>
                 {isSignUp ? 'Sign Up' : 'Log In'}
               </Text>
             </TouchableOpacity>
 
-            {/* Toggle */}
             <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)}>
               <Text style={styles.toggleText}>
                 {isSignUp
@@ -117,7 +105,6 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
             </TouchableOpacity>
           </View>
 
-          {/* Footer */}
           <Text style={styles.footer}>
             Works offline via LAN or hotspot
           </Text>
@@ -132,20 +119,72 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 20, justifyContent: 'center' },
   logoContainer: { alignItems: 'center', marginBottom: 24 },
-  logoCircle: { backgroundColor: 'white', padding: 16, borderRadius: 50, marginBottom: 12 },
+  logoCircle: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 50,
+    marginBottom: 12,
+  },
   title: { fontSize: 32, color: 'white', fontWeight: 'bold' },
-  subtitle: { color: '#E9D5FF', textAlign: 'center', marginTop: 4 },
-  aiCard: { backgroundColor: 'rgba(255,255,255,0.15)', padding: 12, borderRadius: 12, marginBottom: 20 },
-  aiRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  aiIcon: { backgroundColor: '#FACC15', padding: 6, borderRadius: 20 },
+  subtitle: {
+    color: '#E9D5FF',
+    textAlign: 'center',
+    marginTop: 4,
+  },
+  aiCard: {
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 20,
+  },
+  aiRow: { flexDirection: 'row', alignItems: 'center' },
+  aiIcon: {
+    backgroundColor: '#FACC15',
+    padding: 6,
+    borderRadius: 20,
+    marginRight: 8,
+  },
   aiText: { flex: 1, color: 'white', fontSize: 13 },
-  closeText: { color: 'white', fontSize: 18 },
-  card: { backgroundColor: 'white', padding: 20, borderRadius: 16 },
-  heading: { fontSize: 22, textAlign: 'center', marginBottom: 16, fontWeight: '600' },
-  inputContainer: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 8, marginBottom: 12, gap: 8 },
-  input: { flex: 1 },
-  loginButton: { backgroundColor: '#7C3AED', padding: 14, borderRadius: 8, alignItems: 'center', marginTop: 10 },
+  closeText: { color: 'white', fontSize: 18, marginLeft: 8 },
+  card: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 16,
+  },
+  heading: {
+    fontSize: 22,
+    textAlign: 'center',
+    marginBottom: 16,
+    fontWeight: '600',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    marginBottom: 12,
+  },
+  input: { flex: 1, marginLeft: 8 },
+  loginButton: {
+    backgroundColor: '#7C3AED',
+    padding: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
   loginButtonText: { color: 'white', fontWeight: '600' },
-  toggleText: { textAlign: 'center', marginTop: 14, color: '#7C3AED' },
-  footer: { textAlign: 'center', color: 'rgba(255,255,255,0.8)', marginTop: 20, fontSize: 12 },
+  toggleText: {
+    textAlign: 'center',
+    marginTop: 14,
+    color: '#7C3AED',
+  },
+  footer: {
+    textAlign: 'center',
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: 20,
+    fontSize: 12,
+  },
 });
