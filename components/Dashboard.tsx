@@ -4,10 +4,15 @@ import {
   Text,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function Dashboard() {
+
+  const router = useRouter();
+
   const placeholderData = {
     name: 'Jomar Melendrez',
 
@@ -19,7 +24,7 @@ export default function Dashboard() {
 
   return (
     <ScrollView style={styles.container}>
-      
+
       {/* Header */}
       <View style={styles.header}>
         <View>
@@ -32,8 +37,19 @@ export default function Dashboard() {
         </View>
       </View>
 
+      {/* Test Button */}
+      <TouchableOpacity
+        style={styles.testButton}
+        onPress={() => router.push('/profile')}
+      >
+        <Text style={styles.testButtonText}>
+          Test: Go to Profile
+        </Text>
+      </TouchableOpacity>
+
       {/* Quick Stats */}
       <View style={styles.statsRow}>
+
         <View style={styles.statCard}>
           <Ionicons name="flame-outline" size={22} color="orange" />
         </View>
@@ -45,19 +61,27 @@ export default function Dashboard() {
         <View style={styles.statCard}>
           <Ionicons name="trending-up-outline" size={22} color="green" />
         </View>
+
       </View>
 
-      {/* AI Section */}
+      {/* AI Recommendations */}
       <View style={styles.section}>
+
         <View style={styles.sectionHeader}>
           <Ionicons name="sparkles-outline" size={18} color="#7C3AED" />
-          <Text style={styles.sectionTitle}>AI Recommendations</Text>
+          <Text style={styles.sectionTitle}>
+            AI Recommendations
+          </Text>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.recommendation}>Hello</Text>
+          <Text style={styles.recommendation}>
+            Hello
+          </Text>
         </View>
+
         <View style={styles.card} />
+
       </View>
 
       {/* Sessions */}
@@ -76,7 +100,9 @@ export default function Dashboard() {
       <View style={styles.badgeRow}>
         {placeholderData.badges.map((badge) => (
           <View key={badge.id} style={styles.badgeCard}>
-            <Text style={styles.badgeIcon}>{badge.icon}</Text>
+            <Text style={styles.badgeIcon}>
+              {badge.icon}
+            </Text>
           </View>
         ))}
       </View>
@@ -86,6 +112,7 @@ export default function Dashboard() {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: '#F9FAFB',
@@ -99,9 +126,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  recommendation: {
-    alignItems: 'center'
   },
 
   welcome: {
@@ -120,6 +144,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     padding: 10,
     borderRadius: 50,
+  },
+
+  testButton: {
+    backgroundColor: '#ffc107',
+    padding: 15,
+    marginHorizontal: 20,
+    marginTop: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 3,
+  },
+
+  testButtonText: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 
   statsRow: {
@@ -143,12 +183,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    gap: 6,
   },
 
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
+    marginLeft: 6,
   },
 
   card: {
@@ -157,6 +197,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 12,
     elevation: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  recommendation: {
+    textAlign: 'center',
   },
 
   badgeRow: {
@@ -175,4 +221,5 @@ const styles = StyleSheet.create({
   badgeIcon: {
     fontSize: 22,
   },
+
 });

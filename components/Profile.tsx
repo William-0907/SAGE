@@ -4,13 +4,15 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as Progress from 'react-native-progress';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function ProfileScreen() {
   const userData = {
@@ -73,7 +75,7 @@ export default function ProfileScreen() {
           <View style={styles.card}>
             <View style={styles.levelRow}>
               <View style={styles.levelLeft}>
-                <Ionicons name="star" size={18} color="#FACC15" />
+                <Ionicons name="star" size={18} color="#FACC15" style={{ marginRight: 6 }} />
                 <Text style={styles.levelText}>
                   Level {userData.level}
                 </Text>
@@ -84,16 +86,7 @@ export default function ProfileScreen() {
               </Text>
             </View>
 
-            <Progress.Bar
-              progress={userData.currentXP / userData.nextLevelXP}
-              width={null}
-              height={8}
-              borderRadius={8}
-              color="#7C3AED"
-              unfilledColor="#E5E7EB"
-              borderWidth={0}
-              style={{ marginVertical: 8 }}
-            />
+            
 
             <Text style={styles.xpLeft}>
               {userData.nextLevelXP - userData.currentXP} XP to next level
@@ -330,11 +323,11 @@ const styles = StyleSheet.create({
   levelLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
   },
 
   levelText: {
     fontWeight: '600',
+    color: '#111827',
   },
 
   xpText: {
@@ -353,11 +346,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
+  // FIX: Changed color to white so it is visible on purple background
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 10,
-    color: '#111827',
+    color: 'white',
   },
 
   /* Overview */
@@ -379,6 +373,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     marginTop: 6,
+    color: '#111827',
   },
 
   overviewLabel: {
@@ -399,13 +394,13 @@ const styles = StyleSheet.create({
   statLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
   },
 
   statIcon: {
     backgroundColor: '#EDE9FE',
     padding: 6,
     borderRadius: 20,
+    marginRight: 10,
   },
 
   statLabel: {
@@ -415,6 +410,7 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#111827',
   },
 
   divider: {
@@ -453,17 +449,19 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: 'center',
     marginBottom: 4,
+    color: '#111827',
   },
 
   earnedBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    marginTop: 2,
   },
 
   earnedText: {
     fontSize: 10,
     color: '#16A34A',
+    marginLeft: 2,
   },
 
   /* Achievements */
@@ -478,6 +476,7 @@ const styles = StyleSheet.create({
   achievementTitle: {
     fontSize: 13,
     fontWeight: '500',
+    color: '#111827',
   },
 
   achievementDate: {
@@ -496,6 +495,7 @@ const styles = StyleSheet.create({
   pointsText: {
     fontSize: 11,
     fontWeight: '600',
+    color: '#111827',
   },
 
   /* Footer */
