@@ -1,0 +1,95 @@
+import React, { useState } from 'react';
+import { View, TextInput, Button, StyleSheet, Alert, Text } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { UserFormData, UserRole } from './types';
+
+const RegisterScreen: React.FC = () => {
+  // Initialize state with the interface
+  const [formData, setFormData] = useState<UserFormData>({
+    full_name: '',
+    email: '',
+    username: '',
+    password: '',
+    role: 'STUDENT',
+  });
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleRegister = async () => {
+    setLoading(true);
+    try {
+      // Replace with your machine's Local IP (e.g., 192.168.1.5)
+      const response = await fetch('http://192.168.x.x:8000/api/users/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Alert.alert("Success", `User ${data.username} created!`);
+      } else {
+        // Handle Django Rest Framework validation errors
+        Alert.alert("Error", JSON.stringify(data));
+      }
+    } catch (error) {
+      Alert.alert("Network Error", "Could not connect to the server.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.label}>Full Name</Text>
+      <TextInput 
+        style={styles.input}
+        value={formData.full_name}
+        onChangeText={(val) => setFormData({ ...formData, full_name: val })}
+      />
+
+      <Text style={styles.label}>Role</Text>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={formData.role}
+          onValueChange={(itemValue: UserRole) => 
+            setFormData({ ...formData, role: itemValue })
+          }
+        >
+          <Picker.Item label="Student" value="STUDENT" />
+          <Picker.Item label="Teacher" value="TEACHER" />
+          <Picker.Item label="Admin" value="ADMIN" />
+        </Picker>
+      </View>
+
+      <Button 
+        title={loading ? "Registering..." : "Create Account"} 
+        onPress={handleRegister} 
+        disabled={loading}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 20, justifyContent: 'center' },
+  label: { fontWeight: 'bold', marginBottom: 5 },
+  input: { 
+    borderWidth: 1, 
+    borderColor: '#ccc', 
+    borderRadius: 5, 
+    padding: 10, 
+    marginBottom: 15 
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 20,
+  }
+});
+
+export default RegisterScreen;
